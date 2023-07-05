@@ -4,7 +4,7 @@ const db = require("../models");
 class PessoasService {
 
   async cadastrarPessoa(dto) {
-    const pessoa = await db.Pessoas.findOne({
+    const pessoa = await db.pessoas.findOne({
       where: {
         documento: dto.documento
       }
@@ -14,7 +14,7 @@ class PessoasService {
       throw new Error("Pessoa já cadastrada");
 
     try {
-      const novaPessoa = await db.Pessoas.create({
+      const novaPessoa = await db.pessoas.create({
         id: uuidv4(),
         nome: dto.nome,
         documento: dto.documento,
@@ -30,7 +30,7 @@ class PessoasService {
 
   async listarPessoas(condicao = {}) {
     try {
-      return await db.Pessoas.findAll({ where: { ...condicao } });
+      return await db.pessoas.findAll({ where: { ...condicao } });
     } catch (error) {
       throw new Error(error);
     }
@@ -38,7 +38,7 @@ class PessoasService {
 
   async buscarPessoaPorId(id) {
     try {
-      const pessoa = await db.Pessoas.findOne({
+      const pessoa = await db.pessoas.findOne({
         where: {
           id: id
         }
@@ -54,7 +54,7 @@ class PessoasService {
   }
 
   async alterarPessoa(dto, id) {
-    const pessoa = await db.Pessoas.findOne({
+    const pessoa = await db.pessoas.findOne({
       where: {
         id: id
       }
@@ -78,7 +78,7 @@ class PessoasService {
   }
 
   async deletarPessoa(id) {
-    const pessoa = await db.Pessoas.findOne({
+    const pessoa = await db.pessoas.findOne({
       where: {
         id: id
       }
@@ -88,7 +88,7 @@ class PessoasService {
       throw new Error("Pessoa não encontrada");
 
     try {
-      await db.Pessoas.destroy({
+      await db.pessoas.destroy({
         where: {
           id: id
         }
