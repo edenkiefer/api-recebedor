@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 "use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Pessoas", {
+    await queryInterface.createTable("pessoas", {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -10,11 +11,9 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       nome: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       documento: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       telefone: {
@@ -33,8 +32,7 @@ module.exports = {
       }
     });
   },
-  // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Pessoas");
+    await queryInterface.dropTable("pessoas");
   }
 };
