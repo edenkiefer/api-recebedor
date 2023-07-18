@@ -1,7 +1,8 @@
 const { v4: uuidv4 } = require("uuid");
 const db = require("../models");
 const { hash } =  require("bcryptjs");
-
+const SegurancaService = require("./SegurancaService");
+const segurancaService = new SegurancaService();
 class UsuariosService {
   
   async cadastrarUsuario(dto) {
@@ -23,6 +24,10 @@ class UsuariosService {
         nome_usuario: dto.nome_usuario, 
         senha: senhaHash 
       });
+
+      const roleUsuario = process.env.USUARIO_ROLE_ID;
+
+      await segurancaService.cadastrarAcl({usuarioId: novoUsuario.id, roles:[roleUsuario]});
 
       return novoUsuario;
     } catch (error) {
