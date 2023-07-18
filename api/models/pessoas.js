@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "pagador_id"
       });
       pessoas.hasOne(models.usuarios, {
-        foreignKey: "pessoa_id"
+        foreignKey: "pessoa_id",
+        as: "usuarioPessoa"
       });
     }
   }

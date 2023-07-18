@@ -4,8 +4,13 @@ const {
 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class roles extends Model {
-    // eslint-disable-next-line no-unused-vars
-    static associate(models) {}
+    static associate(models) {
+      roles.belongsToMany(models.usuarios, {
+        through: models.usuarios_roles,
+        foreignKey: "role_id",
+        as: "role_usuarios"
+      });
+    }
   }
   roles.init({
     nome: DataTypes.STRING,

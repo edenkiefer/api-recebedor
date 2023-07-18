@@ -1,6 +1,8 @@
 const { v4: uuidv4 } = require("uuid");
 const db = require("../models");
-
+const { hash } =  require("bcryptjs");
+const SegurancaService = require("./SegurancaService");
+const segurancaService = new SegurancaService();
 class UsuariosService {
   
   async cadastrarUsuario(dto) {
@@ -14,12 +16,19 @@ class UsuariosService {
       throw new Error("Usuário já cadastrado");
 
     try {
+      const senhaHash = await hash(dto.senha, 8);
+
       const novoUsuario = await db.usuarios.create({ 
         id: uuidv4(),
-        pessoa_id: dto.pessoa_id , 
-        nome_usuario: dto.nome_usuario , 
-        senha: dto.senha 
+        pessoa_id: dto.pessoa_id, 
+        nome_usuario: dto.nome_usuario, 
+        senha: senhaHash 
       });
+
+      const roleUsuario = process.env.USUARIO_ROLE_ID;
+
+      await segurancaService.cadastrarAcl({usuarioId: novoUsuario.id, roles:[roleUsuario]});
+
       return novoUsuario;
     } catch (error) {
       throw new Error(error);
@@ -37,7 +46,14 @@ class UsuariosService {
 
   async buscarUsuarioPorId(id) {
     try {
-      const usuario = await db.usuarios.findOne({ where: { id: id } });
+      const usuario = await db.usuarios.findOne({ 
+        where: { "$usuarioPessoa.telefone$": id },   
+        include: {
+          model: db.pessoas,
+          attributes: ["email", "telefone"],
+          as: "usuarioPessoa"
+        }
+      });
 
       if (!usuario)
         throw new Error("Usuário não encontrado");
