@@ -8,8 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       usuarios.belongsTo(models.pessoas, { 
         foreignKey: "pessoa_id",
         as: "usuarioPessoa"
-      }
-      );
+      });
+      usuarios.belongsToMany(models.roles, {
+        through: models.usuarios_roles,
+        foreignKey: "usuario_id",
+        as: "usuario_roles"
+      });
     }
   }
   usuarios.init({
