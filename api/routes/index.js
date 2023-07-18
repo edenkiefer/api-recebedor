@@ -4,6 +4,7 @@ const transacoes = require("./TransacaoRoute.js");
 const usuarios = require("./UsuariosRoute.js");
 const roles = require("./RolesRoute.js");
 const auth = require("./AuthRoute.js");
+const seguranca = require("./SegurancaRoute.js");
 
 module.exports = app => {
   app.use(
@@ -12,6 +13,7 @@ module.exports = app => {
     usuarios,
     roles,
     pessoas,
-    transacoes
+    transacoes,
+    seguranca
   );
 };
